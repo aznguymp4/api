@@ -8,6 +8,7 @@ const request = require('request')
 process.on('uncaughtException', function(err) { console.error(err?.stack||err) })
 
 app.get('/*', function(req,res) {
+	console.log(req,res)
 	let link = `https://${IP}:${PORT}${res.socket.parser.incoming.url}`
 	request(link).pipe(res)
 });
