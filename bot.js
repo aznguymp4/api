@@ -10,6 +10,7 @@ process.on('uncaughtException', function(err) { console.error(err?.stack||err) }
 app.get('/*', function(req,res) {
 	console.log(req,res)
 	let link = `https://${IP}:${PORT}${res.socket.parser.incoming.url}`
+	console.log(`redirecting to ${link}`)
 	request(link).pipe(res)
 });
 app.listen(process.env.PORT, ()=>{
