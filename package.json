@@ -1,0 +1,17 @@
+{
+    "name": "api",
+    "description": "api for aznbot.mp4",
+    "version": "1.0.0",
+    "main": "bot.js",
+    "scripts": {
+      "start": "node bot.js"
+    },
+    "engines": {
+      "node": "16.x"
+    },
+    "dependencies": {
+      "dotenv": "^16.0.0",
+      "express": "^4.17.2",
+      "request": "^2.88.2"
+    }
+  }
