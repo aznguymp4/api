@@ -1,7 +1,8 @@
-require('dotenv').config({path:'./.env'})
+import dotenv from 'dotenv'
 import express from 'express'
 import fetch from 'node-fetch'
 import request from 'request'
+dotenv.config({path:'./.env'})
 const app = express()
 const PORT = process.env.LOCALPORT||process.env.PORT
 const IP = process.env.IP
