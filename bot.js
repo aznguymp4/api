@@ -12,7 +12,7 @@ app.get('/*', function(req,res) {
 	let link = `https://${IP}:${PORT}${res.socket.parser.incoming.url}`
 	request(link).pipe(res)
 });
-app.listen(PORT, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log(`API running on ${IP}:${PORT}`)
 })
 setInterval(()=>{ fetch('http://api.aznguy.com',{method:'GET'}) },1500000)
