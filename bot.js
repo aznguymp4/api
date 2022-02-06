@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import fetch from 'node-fetch'
 import request from 'request'
+import cors from 'cors'
 //import https from 'https'
 dotenv.config({path:'./.env'})
 const app = express()
@@ -13,6 +14,14 @@ const httpsOptions = {
 	key  : process.env.KEY
 }
 console.log(httpsOptions)
+
+app.use(cors({
+	allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
+	exposedHeaders: ["authorization"], // you can change the headers
+	origin: "*",
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	preflightContinue: false
+}))
 
 app.get('/*', function(req,res) {
 	//res.status(200).send('HELLO')
