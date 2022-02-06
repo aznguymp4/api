@@ -1,6 +1,6 @@
 process.on('uncaughtException', function(err) { console.error(err?.stack||err) })
 import dotenv from 'dotenv'
-import express from 'express'
+import express, { json, response } from 'express'
 import fetch from 'node-fetch'
 import request from 'request'
 import cors from 'cors'
@@ -9,6 +9,7 @@ dotenv.config({path:'./.env'})
 const app = express()
 const PORT = process.env.LOCALPORT||process.env.PORT
 const IP = process.env.IP
+const REMOTE = `http://${IP}:${PORT}`
 const httpsOptions = {
 	cert : process.env.CERT,
 	key  : process.env.KEY
@@ -22,17 +23,27 @@ app.use(cors({
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	preflightContinue: false
 }))
+app.use(express.json())
 
 app.get('/*', function(req,res) {
 	//res.status(200).send('HELLO')
-	let link = `http://${IP}:${PORT}${res.socket.parser.incoming.url}`
-	request(link).pipe(res)
+	request(`${REMOTE}${res.socket.parser.incoming.url}`).pipe(res)
+})
+
+app.post('/*', function(req,res){
+	fetch(`${REMOTE}${res.socket.parser.incoming.url}`, {headers: req.headers, method: 'POST', body:JSON.stringify(req.body)}).then(response => {
+		console.log(response,1)
+		res.status(response.status).send(response.statusText)
+	}).catch(response => {
+		console.error(response,0)
+		res.status(404).send('Forbidden')
+	})
 })
 
 //https.createServer(httpsOptions,app)
 app
 .listen(process.env.PORT,()=>{
-    console.log(`API running on ${IP}:${PORT}`)
+	console.log(`API running on ${IP}:${PORT}`)
 })
 setInterval(()=>{ fetch('https://api.aznguy.com',{method:'GET'}) },1500000)
 // ping every 25 minutes so it doesn't go to sleep mode cause heroku big dumb
