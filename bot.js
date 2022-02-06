@@ -15,12 +15,13 @@ const httpsOptions = {
 console.log(httpsOptions)
 
 app.get('/*', function(req,res) {
-	let link = `http://${IP}:${PORT}${res.socket.parser.incoming.url}`
-	request(link).pipe(res)
+	res.status(200).send('HELLO')
+	//let link = `http://${IP}:${PORT}${res.socket.parser.incoming.url}`
+	//request(link).pipe(res)
 })
 
 https.createServer(httpsOptions,app).listen(process.env.PORT,()=>{
     console.log(`API running on ${IP}:${PORT}`)
 })
-setInterval(()=>{ fetch('http://api.aznguy.com',{method:'GET'}) },1500000)
+setInterval(()=>{ fetch('https://api.aznguy.com',{method:'GET'}) },1500000)
 // ping every 25 minutes so it doesn't go to sleep mode cause heroku big dumb
