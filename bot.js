@@ -45,5 +45,5 @@ app
 .listen(process.env.PORT,()=>{
 	console.log(`API running on ${IP}:${PORT}`)
 })
-setInterval(()=>{ fetch('https://api.aznguy.com',{method:'GET'}) },1500000)
+setInterval(()=>{ fetch('http://api.aznguy.com',{method:'GET'}) },1500000)
 // ping every 25 minutes so it doesn't go to sleep mode cause heroku big dumb
