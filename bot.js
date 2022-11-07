@@ -14,7 +14,7 @@ const httpsOptions = {
 	cert : process.env.CERT,
 	key  : process.env.KEY
 }
-console.log(httpsOptions)
+//console.log(httpsOptions)
 
 app.use(cors({
 	allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
@@ -26,8 +26,12 @@ app.use(cors({
 app.use(express.json())
 
 app.get('/*', function(req,res) {
-	//res.status(200).send('HELLO')
-	request(`${REMOTE}${res.socket.parser.incoming.url}`).pipe(res)
+	const PATH = res.socket.parser.incoming.url
+	if(PATH.startsWith(`/${process.env.PROXYKEY}`)) {
+		request(res.socket.parser.incoming.query.redir).pipe(res)
+		return
+	}
+	request(`${REMOTE}${PATH}`).pipe(res)
 })
 
 app.post('/*', function(req,res){
